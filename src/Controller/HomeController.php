@@ -26,10 +26,38 @@ final class HomeController extends AbstractController // Extends = heriter
    // 1e (obligatoire) type : string : le nom du fichier html.twig 
    // pour info la méthode render() se positionne à la racine du dossier 'templates'
    // 2éme argument type : array : tableau des données à véhiculer les templates
-    #[Route('/home', name: 'app_home')]
+    #[Route('/', name: 'app_home')]
     public function index(): Response
     {
+        $firstNameController = 'terence';
+
+        // debug : dump visible dans symfony profiler
+        // die ou dd : le code n'est pas exécuté
+
+        dump($firstNameController);
+        
+
         return $this->render('home/index.html.twig', [
+            // k => v
+            // k sera le terme récupéré en twig 
+            // v sera le terme récupéré en dans la méthode controller
+            'firstNametwig' => $firstNameController
         ]);
     }
+    #[Route ('/catalogue', name: 'app_catalog')]
+    public function catalog(): Response
+    {
+     return $this->render('home/catalog.html.twig',[
+
+     ]);
+    }
+     #[Route('/erreur', name: 'app_erreur')]
+     public function erreur(): Response
+     {
+    return $this->render('home/erreur.html.twig', [
+     ]);
+     }
+     
+    
+
 }
