@@ -10,10 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Loader\Configurator\form;
 
+#[Route('/produit')]
 final class ProductcontrollerController extends AbstractController
 {
-    #[Route('/produit/afficher', name:'app_product_index')]
+    #[Route('/afficher', name:'app_product_index')]
     public function index(ProductRepository $productRepository): Response
     {
         /*
@@ -43,7 +45,7 @@ final class ProductcontrollerController extends AbstractController
        ]);
     }
 
-    #[Route('/produit/ajouter', name:'app_product_new')]
+    #[Route('/ajouter', name:'app_product_new')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         /*
@@ -89,7 +91,7 @@ final class ProductcontrollerController extends AbstractController
             //dd($product);
 
             // notification
-
+            $this->addFlash('success','le produit' .$product->getTitle().'à bien était ajouté');
 
             // redirection
             /*
@@ -105,9 +107,64 @@ final class ProductcontrollerController extends AbstractController
            'formProduct' => $form->createView() 
         ]);
     }
+    #[Route('/fiche/{id}',name :'app_product_show')]
+    public function show(Product $product) : Response
+    {
+          /*
+            Il existe 2 types de route : avec et sans paramètres
+
+            Les paramètres permettent de véhiculer des données d'une route à une autre
+
+            On distingue 2 types de paramètres :
+                - ceux qui permettent de récupérer un objet de la base de données
+                - les autres, juste des valeurs (une variable)
+
+            On peut définir le nom du paramètre comme on le souhaite sauf si ce dernier est à injecter dans un objet issu d'une entity, il faut que le paramètre porte le même nom que la propriété de l'objet 
+            l'ORM de Symfony (Doctrine) s'occupe de récupérer tout l'objet en BDD (pas besoin de faire une requête)
+
+            Depuis Symfony 7, si le paramètre n'est pas la clé primaire (id) la syntaxe est :
+            {property:entity} 
+            rappel pour la clé primaire : {id}
+        */
+        dump($product);
+        return $this->render('productcontroller/show.html.twig' , [
+            'product' => $product,
+
+        ]);
+         
+    }
+    #[Route('/edit' ,name: 'app_product_edit')]
+    public function edit(Product $product, Request $request, EntityManagerInterface $entityManager) : Response
+     {
+        /*
+            Les routes "ajouter" et "modifier" sont identiques sauf que dans un cas on génère un nouvel objet $product et dans l'autre on récupère un objet $product de la base de données
+        */
+        $form = $this->createForm(ProductForm::class, $product);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $entityManager->flush();
 
 
+            return $this->redirectToRoute('app_product_index');
+            //return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
+        }
 
+        return $this->render('productcontroller/edit.html.twig', [
+            'product' => $product,
+            'formProduct' => $form
+        ]);
+    }
 
-    
+   #[Route('/supprimer/{id}', name:'app_product_delete')]
+    public function delete(Product $product, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($product);
+        $entityManager->flush();
+        $this->addFlash('success', 'Le produit "' . $product->getTitle() . '" a bien été supprimé');
+        return $this->redirectToRoute('app_product_index');
+    }
+
 }

@@ -4,7 +4,18 @@
                     La fonction twig path() permet de faire des redirections internes
                     1e argument (obligation) - type : string ==> Nom de la route (attribut name)
                     2e argument (facultatif) - type : array ==> tableau des paramétres
+                      array en PHP :
+            [
+                'k' => 'v'
+            ]
+            array en Twig :
+            {
+                'k' : 'v'
+            }
+            k : nom du paramètre
+            v : valeur du paramètre
                 #}
+             
                     <a class="navbar-brand text-white" href="{{path('app_home')}}">Ecommerce</a>
                     <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
