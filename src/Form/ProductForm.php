@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Product;
+use App\Repository\CategoryRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
@@ -118,6 +121,47 @@ class ProductForm extends AbstractType
                     ])
                 ]
             ])
+
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'titre',
+                'placeholder' => '--selectionner la catégorie----',
+                'label' => 'Catégorie<span class="text-danger">*</span>',
+                'label_attr' => [
+                    'class' => 'text-info'
+                ],
+            ])
+
+           ->add('category', EntityType::class, [ // EntityType ==> Relation (Recherche en BDD)
+                'class' => Category::class, // Définir quelle class (==> table)
+                //'choice_label' => 'title', // Afficher quelle propriété
+                'choice_label' => function (Category $category)
+                    {
+                        return $category->getTitre() . ' (' . $category->getId() . ')';
+                    },
+                'placeholder' => '-- Sélectionner la catégorie --',
+                //'expanded' => true, // permet de transformer la balise select soit en radio soit en checkbox (en fonction de la relation)
+                //'multiple' => true, // option à définir pour les relations MANY
+                'label' => 'Catégorie<span class="text-danger">*</span>',
+                'label_attr' => [
+                    'class' => 'text-info'
+                ],
+                'label_html' => true,
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez sélectionner la catégorie du produit'
+                    ]),
+                ],
+                'query_builder' => function (CategoryRepository $categoryRepository)
+                                {
+                                    return $categoryRepository->createQueryBuilder('c')
+                                        ->orderBy('c.titre', 'ASC')
+                                    ;
+                                }
+            ])
+        
+    
                
                
             
