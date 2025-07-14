@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+
+<a class= "nav-link text-black" href="{{path('app_product_index')}}">Tous les produits</a>
+
+<a class= "nav-link text-black" href="{{path('app_product_new')}}">Ajouter un produit</a>
+
+<a class= "nav-link text-black" href="{{path('app_category_index')}}">Toutes les catégories</a>
+
+<a class= "nav-link text-black" href="{{path('app_category_new')}}">Ajouter une catégorie</a>
+
+<a class= "nav-link text-black" href="{{path('app_material_index')}}">Toutes les matiéres</a>
+
+<a class= "nav-link text-black" href="{{path('app_material_new')}}">Ajouter une matiére</a>
+
+<a class= "nav-link text-black" href="{{path('app_brand_index')}}">Tous les marques</a>
+
+<a class= "nav-link text-black" href="{{path('app_brand_new')}}">Ajouter une marque</a>
+
+{% endblock %}

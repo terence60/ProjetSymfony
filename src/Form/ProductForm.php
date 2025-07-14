@@ -2,12 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
+use App\Entity\Brand;
 use App\Entity\Product;
+use App\Entity\Category;
+use App\Entity\Material;
 use App\Repository\CategoryRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
@@ -160,6 +163,58 @@ class ProductForm extends AbstractType
                                     ;
                                 }
             ])
+
+                ->add('materials', EntityType::class, [ // EntityType ==> Relation (Recherche en BDD)
+                'class' => Material::class, // Définir quelle class (==> table)
+                'choice_label' => 'titre', // Afficher quelle propriété
+                'placeholder' => '-- Sélectionner la matière --',
+                'expanded' => true, // permet de transformer la balise select soit en radio soit en checkbox (en fonction de la relation)
+                'multiple' => true, // option à définir pour les relations MANY
+                'label' => 'Matière<span class="text-danger">*</span>',
+                'label_attr' => [
+                    'class' => 'text-info'
+                ],
+                'label_html' => true,
+                'required' => false,
+                'constraints' => [
+                    new Count([
+                        'min' => 1,
+                        'minMessage' => 'Veuillez sélectionner au moins 1 matière'
+                    ])
+                ]
+
+       
+            
+            ])
+
+
+            ->add('brands', EntityType::class, [ // EntityType ==> Relation (Recherche en BDD)
+                'class' => Brand::class, // Définir quelle class (==> table)
+                'choice_label' => 'titre', // Afficher quelle propriété
+                'placeholder' => '-- Sélectionner la marque --',
+                'expanded' => true, // permet de transformer la balise select soit en radio soit en checkbox (en fonction de la relation)
+                'multiple' => true, // option à définir pour les relations MANY
+                'label' => 'Marque<span class="text-danger">*</span>',
+                'label_attr' => [
+                    'class' => 'text-info'
+                ],
+                'label_html' => true,
+                'required' => false,
+                'constraints' => [
+                    new Count([
+                        'min' => 1,
+                        'minMessage' => 'Veuillez sélectionner au moins 1 marque'
+                    ])
+                ]
+
+       
+            
+            ])
+
+             
+
+            
+            
         
     
                

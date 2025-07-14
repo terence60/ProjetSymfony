@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block h1 %}{{ category.title|capitalize }}{% endblock %}
+{% block h1 %}{{ category.titre|capitalize }}{% endblock %}
 
 {% block body %}
 
@@ -14,7 +14,7 @@
             </tr>
             <tr>
                 <th class="w-25">Titre</th>
-                <td class="w-75">{{ category.title }}</td>
+                <td class="w-75">{{ category.titre }}</td>
             </tr>
             
         </tbody>
@@ -37,7 +37,7 @@
                     <td>{{ product.id }}</td>
                     <td>{{ product.title|capitalize }}</td>
                     <td>{{ product.price }}</td>
-                
+                 
                     <td>
                         {# Fiche complète #}
                         <a 

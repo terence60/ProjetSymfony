@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Matiéres{% endblock %}
+
+{% block body %}
+    <h1>Création de nouvelles matiéres</h1>
+
+    {{ include('material/_form.html.twig') }}
+
+    <a href="{{ path('app_material_index') }}">retour à la liste</a>
+{% endblock %}
