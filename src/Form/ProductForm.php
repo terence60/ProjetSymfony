@@ -188,7 +188,7 @@ class ProductForm extends AbstractType
             ])
 
 
-            ->add('brands', EntityType::class, [ // EntityType ==> Relation (Recherche en BDD)
+            ->add('brand', EntityType::class, [ // EntityType ==> Relation (Recherche en BDD)
                 'class' => Brand::class, // Définir quelle class (==> table)
                 'choice_label' => 'titre', // Afficher quelle propriété
                 'placeholder' => '-- Sélectionner la marque --',

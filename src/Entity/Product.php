@@ -34,16 +34,15 @@ class Product
     #[ORM\ManyToMany(targetEntity: Material::class, inversedBy: 'products')]
     private Collection $materials;
 
-    /**
-     * @var Collection<int, Brand>
-     */
-    #[ORM\ManyToMany(targetEntity: Brand::class, inversedBy: 'products')]
-    private Collection $brands;
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?Brand $Brand = null;
+
+
 
     public function __construct()
     {
         $this->materials = new ArrayCollection();
-        $this->brands = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -123,27 +122,19 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection<int, Brand>
-     */
-    public function getBrands(): Collection
+    public function getBrand(): ?Brand
     {
-        return $this->brands;
+        return $this->Brand;
     }
 
-    public function addBrand(Brand $brand): static
+    public function setBrand(?Brand $Brand): static
     {
-        if (!$this->brands->contains($brand)) {
-            $this->brands->add($brand);
-        }
+        $this->Brand = $Brand;
 
         return $this;
     }
 
-    public function removeBrand(Brand $brand): static
-    {
-        $this->brands->removeElement($brand);
+ 
 
-        return $this;
-    }
+   
 }
